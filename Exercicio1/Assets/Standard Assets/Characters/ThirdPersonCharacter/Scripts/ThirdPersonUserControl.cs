@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.UI;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -13,10 +14,38 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
-        
+		public GameObject particula;
+
+		public Text textoPontos;
+
+		public Text textoFinal;
+
+		private int pontos = 0;
+
+		void OnTriggerEnter(Collider outro){
+
+			if(outro.gameObject.CompareTag("ouro")){
+				Instantiate(particula, outro.gameObject.transform.position, Quaternion.identity);
+				Destroy(outro.gameObject); 
+				MarcaPonto();
+			} 
+		}
+
+		void MarcaPonto(){
+
+			pontos++;
+			textoPontos.text = "Pontos: " + pontos.ToString();
+			if(pontos==7){
+
+				textoFinal.text = "Você venceu!!!";
+
+			}
+
+		}
         private void Start()
         {
-            // get the transform of the main camera
+			textoFinal.text = "";
+			// get the transform of the main camera
             if (Camera.main != null)
             {
                 m_Cam = Camera.main.transform;
